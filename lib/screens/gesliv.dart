@@ -139,11 +139,11 @@ class _GesColisState extends State<GesColis> {
 
   String statut;
   List<SingleState> allStages = [
-    SingleState(stateTitle: "acceptée"),
-    SingleState(stateTitle: "Colis récupéré"),
+    SingleState(stateTitle: "Acceptee"),
+    SingleState(stateTitle: "Colis pris"),
     SingleState(stateTitle: "En route"),
-    SingleState(stateTitle: "Livré"),
-    SingleState(stateTitle: "terminée"),
+    SingleState(stateTitle: "Colis remis"),
+    SingleState(stateTitle: "Fin",),
   ];
 
   final interval = const Duration(seconds: 1);
@@ -235,10 +235,10 @@ class _GesColisState extends State<GesColis> {
                   statutSingle = allStages.elementAt(
                       screenProgress.state.currentStageIndex -1);
                   statut = statutSingle.stateTitle;
-                  if (statut == "acceptée"){
+                  if (statut == "Acceptee"){
                     _isButtonDisabled=true;
                   }
-                  if (statut == "terminée"){
+                  if (statut == "Fin"){
                     _isButton2Disabled=true;
                   }
                   print("go $statut");

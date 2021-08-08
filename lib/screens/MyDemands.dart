@@ -7,6 +7,7 @@ import 'package:livraison_mobile/models/Colis.dart';
 import 'package:livraison_mobile/screens/ProductPage.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:livraison_mobile/screens/suivi_colis.dart';
 import 'package:livraison_mobile/widgets/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -121,7 +122,7 @@ class _DemandPageState extends State<DemandPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-
+                          print("vvvvvvvv ${data[index].titre}");
                           // This Will Call When User Click On ListView Item
                           showDialogFunc(context, data[index].titre ,data[index].description, data[index].image_ap);
                         },
@@ -255,12 +256,12 @@ showDialogFunc(context, titre, desc,img) {
                             ),
                           ),
                           CustomBtn(
-                              text: "Voir plus",
+                              text: "Suivre",
                               onPressed: () {
 
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>
-                                      ProductPage(productTitle: titre,image_ap:img,),
+                                      SuiviColis(titre: titre),
                                 ));
                               })
                         ]))));

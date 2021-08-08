@@ -51,6 +51,7 @@ dependencies:
   flutter_polyline_points: any
   geolocator: any
   mobx: any
+  timer_builder: ^1.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

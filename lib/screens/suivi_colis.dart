@@ -34,8 +34,9 @@ class _SuiviColisState extends State<SuiviColis> {
   SpringServices service;
 
   SingleState statutSingle;
-
-  String statutActuel;
+Timer timer;
+  Timer timer2;
+  String statutActuel ;
   Future<void> _alertDialogBuilder2( String Notif)async{
     return showDialog(
         context: context,
@@ -71,31 +72,34 @@ class _SuiviColisState extends State<SuiviColis> {
   String select;
 
 
-  @computed
-  Future<String> getColis(String titre) async{
+
+  Future<Colis> getColis(String titre) async{
 
     final jwt = await  storage.read(key: "jwt");
-    final response = await http.get('$url/api/livraison/getOneColis/$titre',
+    var response = await http.get('$url/api/livraison/getOneColis/$titre',
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${jwt}',
+          'Authorization': 'Bearer $jwt',
         });
 
     if (response.statusCode == 200) {
-      final jsonresponse = json.decode(response.body)[0];
+      print("gogogogo");
+      final jsonresponse = json.decode(response.body);
       var data = Colis.fromJson(jsonresponse);
+      print("go ${data.statut }");
       newStatut = data.statut;
-      return Future.value(newStatut);
+      print("gogo $newStatut");
+      return Colis.fromJson(jsonresponse);
+
     }
 
   }
   List<SingleState> allStages = [
-    SingleState(stateTitle: "en attente d'acceptation"),
-    SingleState(stateTitle: "acceptée"),
-    SingleState(stateTitle: "Colis récupéré"),
+    SingleState(stateTitle: "Acceptee"),
+    SingleState(stateTitle: "Colis pris"),
     SingleState(stateTitle: "En route"),
-    SingleState(stateTitle: "Colis Livré"),
-    SingleState(stateTitle: "Mission terminée",),
+    SingleState(stateTitle: "Colis remis"),
+    SingleState(stateTitle: "Fin",),
   ];
 
   @override
@@ -105,18 +109,31 @@ class _SuiviColisState extends State<SuiviColis> {
       iconSize: 35,
 
     );
+
     super.initState();
-    setState(() {
-      _scaffoldKey = GlobalKey();
-      const oneSecond = const Duration(seconds: 5);
-      new Timer.periodic(oneSecond, (Timer t) => setState((){}));
-      statutSingle = allStages.elementAt(
-          screenProgress.state.currentStageIndex);
-      statutActuel = statutSingle.stateTitle;
-      if(newStatut.compareTo(statutActuel)==0){
-        screenProgress.state.gotoNextStage();
-      };
-    });
+
+    timer2 = Timer.periodic(Duration(seconds: 4), (Timer t) =>returSt());
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => checkForNewUpdate());
+
+  }
+
+void checkForNewUpdate() async {
+  getColis(widget.titre);
+
+
+  print("lol $newStatut");
+  print("Dodo $statutActuel");
+  if (newStatut == statutActuel  ) {
+    screenProgress.state.gotoNextStage();
+  }
+}
+  String returSt()  {
+
+        statutSingle = allStages.elementAt(
+            screenProgress.state.currentStageIndex);
+        statutActuel = statutSingle.stateTitle;
+        print("11 $statutActuel");
+   return statutActuel;
   }
 
   @override
@@ -147,39 +164,11 @@ class _SuiviColisState extends State<SuiviColis> {
 //          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RefreshIndicator(
-              onRefresh: () {
-                return Future.delayed(
-                  Duration(seconds: 1),
-                      () {
-
-                    setState(() {
-                     getColis(widget.titre);
-                     const oneSecond = const Duration(seconds: 5);
-                     new Timer.periodic(oneSecond, (Timer t) => setState((){}));
-                     statutSingle = allStages.elementAt(
-                         screenProgress.state.currentStageIndex);
-                     statutActuel = statutSingle.stateTitle;
-                     if(newStatut.compareTo(statutActuel)==0) {
-                       screenProgress.state.gotoNextStage();
-                     }
-                    });
-
-                    // showing snackbar
-                    _scaffoldKey.currentState.showSnackBar(
-                      SnackBar(
-                        content: const Text('le suivi a été raffraichi'),
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Padding(
+            Padding(
 
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: screenProgress,
               ),
-            ),
             SizedBox(
               height: 90,
             ),
