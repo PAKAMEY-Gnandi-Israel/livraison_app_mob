@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,24 +20,14 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   CameraPosition _initialLocation = CameraPosition(target: LatLng(0.0, 0.0));
   GoogleMapController mapController;
-  String dropdownValue = 'Please choose a location';
+
 
   // To show Selected Item in Text.
   String holder = '' ;
   Position _currentPosition;
   String _currentAddress = '';
-  List <String> enginreq= [
-    'moto ',
-    'voiture',
-    'Pick up',
-    'Camion',
-  ] ;
-  void getDropDownItem(){
 
-    setState(() {
-      holder = dropdownValue ;
-    });
-  }
+
   final startAddressController = TextEditingController();
   final destinationAddressController = TextEditingController();
   final longController = TextEditingController();
@@ -49,7 +40,7 @@ class _MapViewState extends State<MapView> {
   final poidsFocusNode = FocusNode();
   final htFocusNode = FocusNode();
   final desrinationAddressFocusNode = FocusNode();
-
+  String select;
   String _startAddress = '';
   String _str = '';
   String _destinationAddress = '';
@@ -83,7 +74,10 @@ class _MapViewState extends State<MapView> {
   PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
-
+  List eq=[ 'Moto',
+    'Voiture',
+    'Pick up',
+    'Camion',];
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget _textField({
@@ -514,7 +508,7 @@ class _MapViewState extends State<MapView> {
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>
-                                      CreerColis(longueur: longueur,largeur: largeur,hauteur: hauteur,poids: poidsConsid,prix: pr,engin: engin,adresse_recup: _str,adresse_liv: _destinationAddress,),
+                                      CreerColis(longueur: longueur,largeur: largeur,hauteur: hauteur,poids: poidsConsid,prix: pr,engin: select,adresse_recup: _str,adresse_liv: _destinationAddress,),
                                 ));
                               },
                               child: Container(
@@ -593,6 +587,8 @@ class _MapViewState extends State<MapView> {
                                   setState(() {
                                     _startAddress = value;
                                     _str= value;
+                                    setState(() {
+                                    });
                                   });
                                 }),
                             SizedBox(height: 10),
@@ -606,6 +602,8 @@ class _MapViewState extends State<MapView> {
                                 locationCallback: (String value) {
                                   setState(() {
                                     _destinationAddress = value;
+                                    setState(() {
+                                    });
                                   });
                                 }),
 
@@ -626,68 +624,13 @@ class _MapViewState extends State<MapView> {
 
                                 Container(
                                   width: 150,
-                                  child: Row(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
-                                      Radio(
-                                          value: pm1,
-                                          groupValue: pr,
-                                          onChanged: (val) {
-                                            pr = val;
-                                            engin="Moto";
-                                            setState(() {});
-                                          }),
-                                      Text(
-                                        'Moto',
-                                        style: TextStyle(fontSize: 24),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 150,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Radio(
-                                          value: v1,
-                                          groupValue: pr,
-                                          onChanged: (val) {
-                                            pr = val;
-                                            engin="voiture";
-                                            setState(() {});
-                                          }),
-                                      Text('Voiture', style: TextStyle(fontSize: 24))
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 150,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Radio(
-                                          value: pc1,
-                                          groupValue: pr,
-                                          onChanged: (val) {
-                                            pr = val;
-                                            engin="Pick-up";
-                                            setState(() {});
-                                          }),
-                                      Text('Pick-up', style: TextStyle(fontSize: 24))
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 150,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Radio(
-                                          value: cm1,
-                                          groupValue: pr,
-                                          onChanged: (val) {
-                                            engin="Camion";
-                                            pr = val;
-                                            setState(() {});
-                                          }),
-                                      Text('Camion', style: TextStyle(fontSize: 24))
+                                      addRadioButton(0, 'Moto'),
+                                      addRadioButton(1, 'Voiture'),
+                                      addRadioButton(2, 'Pick up'),
+                                      addRadioButton(3, 'Camion'),
                                     ],
                                   ),
                                 )
@@ -705,35 +648,7 @@ class _MapViewState extends State<MapView> {
                                 ),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                DropdownButton<String>(
-                                        value:dropdownValue,
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  iconSize: 24,
-                                  elevation: 16,
-                                  style: TextStyle(color: Colors.red, fontSize: 18),
-                                  underline: Container(
-                                    height: 2,
-                                    color: Colors.deepPurpleAccent,
-                                  ),
-                                  onChanged: (String data) {
-                                    setState(() {
 
-
-                                    });
-                                  },
-                                  items: enginreq.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-
-                                ),
-
-                              ],  ),
                             SizedBox(height: 5),
                             ElevatedButton(
                               onPressed: (_startAddress != '' &&
@@ -750,7 +665,7 @@ class _MapViewState extends State<MapView> {
                                   _placeDistance = null;
 
                                 });
-                                getDropDownItem();
+
                                 _calculateDistance().then((isCalculated) {
                                   if (isCalculated) {
                                     ScaffoldMessenger.of(context)
@@ -836,4 +751,53 @@ class _MapViewState extends State<MapView> {
         ),
       ),
     );
-  }   }
+  }
+
+  Row addRadioButton(int btnValue, String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Radio(
+          activeColor: Theme.of(context).primaryColor,
+          value: eq[btnValue],
+          groupValue: select,
+          onChanged: (value){
+            setState(() {
+              print(value);
+              select=value;
+              if(select == "Moto"){
+                prixMoto = dis * 50;
+                pm =  prixMoto.toStringAsFixed(3);
+                pm1 = double.parse(pm);
+                pr = pm1;
+                setState(() {});
+
+              }else if(select == "Voiture"){
+
+                prixVoiture = dis*100;
+                v =  prixVoiture.toStringAsFixed(3);
+                v1 = double.parse(v);
+                pr = v1;
+                setState(() {});
+              } else if(select == "Pick up"){
+                prixPick = dis*250;
+                pc =  prixPick.toStringAsFixed(3);
+                pc1 = double.parse(pc);
+                pr = pc1;
+                setState(() {});
+              }else if(select == "Camion"){
+                prixCamion = dis*500;
+                cm =  prixCamion.toStringAsFixed(3);
+                cm1 = double.parse(cm);
+                pr = cm1;
+                setState(() {});
+              }
+            });
+            setState(() {});
+          },
+        ),
+        Text(title)
+      ],
+    );
+  }
+}

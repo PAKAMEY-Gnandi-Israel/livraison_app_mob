@@ -46,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
   // To show Selected Item in Text.
   String holder = '' ;
   List <String> enginreq= [
-    'Moto ',
+    'Moto',
     'Voiture',
     'Pick up',
     'Camion',
@@ -355,7 +355,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               icon: Icon(Icons.arrow_drop_down),
                               iconSize: 24,
                               elevation: 16,
-                              style: TextStyle(color: Colors.red, fontSize: 18),
+                              style: TextStyle(color: Colors.black45, fontSize: 18),
                               underline: Container(
                                 height: 2,
                                 color: Colors.deepPurpleAccent,
