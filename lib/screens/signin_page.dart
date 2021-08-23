@@ -156,14 +156,7 @@ class _SignInPageState extends State<SignInPage> {
                             style: kHeadline,
                           ),
                           SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Vous nous avez manqué!",
-                            style: kBodyText2,
-                          ),
-                          SizedBox(
-                            height: 60,
+                            height: 7,
                           ),
                           MyTextField(
                             hintText: ' email ',

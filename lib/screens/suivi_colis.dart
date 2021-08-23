@@ -231,12 +231,7 @@ void checkForNewUpdate() async {
                                           borderRadius: BorderRadius.all(Radius.circular(10)),
                                         ),
                                       ),
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return 'Veillez remplir ce champ';
-                                        }
-                                        return null;
-                                      },
+
                                     ),
                                   ),
                                   Padding(

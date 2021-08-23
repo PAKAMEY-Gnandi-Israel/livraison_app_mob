@@ -11,6 +11,7 @@ import 'package:livraison_mobile/screens/suivi_colis.dart';
 import 'package:livraison_mobile/widgets/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'EndSuivi.dart';
 import 'home.dart';
 class DemandPage extends StatefulWidget {
   @override
@@ -57,7 +58,7 @@ class _DemandPageState extends State<DemandPage> {
     {
 
 // If that call was not successful, throw an error.
-      throw Exception('Impossible de charger les  colis livrés');
+      throw Exception('Impossible de charger les  Vos demandes');
 
     }
   }
@@ -261,7 +262,7 @@ showDialogFunc(context, titre, desc,img) {
 
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>
-                                      SuiviColis(titre: titre),
+                                      EndSuivi(titre: titre),
                                 ));
                               })
                         ]))));
